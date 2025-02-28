@@ -19,27 +19,23 @@ public class PostsController {
     @Autowired
     PostsService postsService;
 
-    // 게시글 등록
-    @GetMapping("/create")
-    public ModelAndView createGet() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("posts/create");
-        return mav;
+    // 게시글 등록 (화면, GET)
+    @GetMapping("/posts/create")
+    public String create() {
+        return "posts/create";
     }
 
-    // 게시글 등록
-    @PostMapping("/create")
-    public ModelAndView createPost(PostsVo postsVo, RedirectAttributes redirectAttributes) {
-        ModelAndView mav = new ModelAndView();
+    // 게시글 등록 (처리, POST)
+    @PostMapping("/posts/create")
+    public String createPost(PostsVo postsVo, RedirectAttributes redirectAttributes) {
         boolean created = postsService.create(postsVo);
         if (created) {
             redirectAttributes.addFlashAttribute("successMessage", "게시글이 등록되었습니다.");
-            mav.setViewName("redirect:/posts/");
+            return "redirect:/posts/";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "게시글 등록에 실패했습니다.");
-            mav.setViewName("redirect:/posts/create");
+            return "redirect:/posts/create";
         }
-        return mav;
     }
 
     // 게시글 목록
